@@ -2,14 +2,14 @@ import express, { NextFunction, Request, Response } from 'express';
 
 import { indexRouter as apiRouter } from './routes';
 import { setUpMiddleWare as useCommonMiddleware } from './middleware';
-import { connectToDatabase } from './config/mogodb';
+import { connectToDatabase } from './configs/mongodb.config';
+
 import dotenv from 'dotenv';
 import cors from 'cors';
 
 dotenv.config();
 
 let port = process.env.PORT;
-
 let app = express();
 
 const responseInterceptor = (
@@ -38,6 +38,7 @@ app.use(
 		origin: '*',
 	})
 );
+
 useCommonMiddleware(app);
 
 app.use(apiRouter);
@@ -52,9 +53,9 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
 app.listen(port, () => {
 	console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
-console.log('Connecting to databse');
+
 const onConnectToDB = () => {
-	console.log('Connected To DataBase');
+	console.log('⚡️[server]: Connected To DataBase');
 };
 
 connectToDatabase((err) => {
